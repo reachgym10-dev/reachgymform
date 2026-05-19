@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>パーソナルジム REACH STUDIO - 予約フォーム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700&family=Noto+Sans+JP:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gold: #c5a059;
+            --dark-charcoal: #333333;
+            --soft-beige: #fdfaf7;
+            --border-color: #e5dfd9;
+        }
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: var(--soft-beige);
+            color: var(--dark-charcoal);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .serif { font-family: 'Noto Serif JP', serif; }
+        .gold-text { color: var(--primary-gold); }
+        .gold-bg { background-color: var(--primary-gold); }
+
+        .section-divider {
+            position: relative;
+            text-align: center;
+            margin: 3rem 0 1rem 0;
+        }
+        .section-divider::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background-color: var(--border-color);
+            z-index: 1;
+        }
+        .section-divider span {
+            position: relative;
+            background-color: var(--soft-beige);
+            padding: 0 1.5rem;
+            z-index: 2;
+            color: var(--primary-gold);
+            font-size: 0.75rem;
+            letter-spacing: 0.2em;
+        }
+
+        .time-slot {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        .time-slot:hover { border-color: var(--primary-gold); color: var(--primary-gold); }
+        .time-slot.selected {
+            background-color: var(--dark-charcoal);
+            color: #fff;
+            border-color: var(--dark-charcoal);
+        }
+
+        input[type="text"], input[type="email"], select {
+            border: 1px solid var(--border-color) !important;
+            border-radius: 2px !important;
+            background-color: white !important;
+        }
+        input[type="text"]:focus, input[type="email"]:focus, select:focus {
+            border-color: var(--primary-gold) !important;
+            box-shadow: 0 0 0 1px rgba(197, 160, 89, 0.2) !important;
+        }
+
+        .fade-in { animation: fadeIn 0.6s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        .hidden-content { display: none; }
+    </style>
+</head>
+<body class="pb-16">
+
+    <header class="bg-white/80 backdrop-blur-md border-b border-[#eeeae5]">
+        <div class="max-w-md mx-auto px-6 py-5">
+            <h1 class="text-xl font-light tracking-[0.2em] serif text-center">REACH STUDIO</h1>
+            <p class="text-[10px] text-center text-gray-400 tracking-widest mt-1">PERSONAL GYM</p>
+        </div>
+    </header>
+
+    <main class="max-w-md mx-auto px-6 mt-8">
+
+        <!-- 予約フォーム -->
+        <div id="reservationScreen" class="fade-in">
+            <div class="text-center mb-8">
+                <h2 class="serif text-xl mb-3 tracking-wider">挑戦する女性は、美しい。</h2>
+                <p class="text-xs text-gray-500 leading-loose">周りではなく、自分に目を向ける時間。</p>
+            </div>
+
+            <form id="reservationForm">
+                <div class="section-divider"><span>01 DATE & TIME</span></div>
+                <p class="text-[10px] text-center text-gray-400 mb-8 tracking-widest italic">（30秒で予約完了）</p>
+
+                <section class="mb-8">
+                    <p class="text-sm serif mb-6 text-center">ご希望の日時を3つお選びください</p>
+                    <div class="space-y-6">
+                        <div class="relative">
+                            <label class="block text-[10px] text-gray-400 mb-2 tracking-widest uppercase">Select Date</label>
+                            <input type="date" id="prefDate" class="w-full p-4 text-sm outline-none appearance-none" style="border: 1px solid var(--border-color); border-radius: 2px; background-color: white;">
+                        </div>
+                        <div class="grid grid-cols-2 gap-3">
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="10:00">10:00</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="11:30">11:30</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="13:00">13:00</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="14:30">14:30</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="16:00">16:00</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="17:30">17:30</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="19:00">19:00</button>
+                            <button type="button" class="time-slot p-4 text-xs tracking-widest" data-time="20:30">20:30</button>
+                        </div>
+                    </div>
+                    <div class="bg-white border border-[#eeeae5] p-5 mt-6">
+                        <p class="text-[10px] tracking-tighter text-gray-400 mb-4 uppercase">Selection Status</p>
+                        <ul id="selectedList" class="text-xs space-y-3">
+                            <li class="text-gray-300 italic text-center py-2">日時が選択されていません</li>
+                        </ul>
+                    </div>
+                </section>
+
+                <div class="section-divider"><span>02 GUEST INFO</span></div>
+                <section class="space-y-8">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 tracking-widest uppercase">Name</label>
+                            <input type="text" id="name" required placeholder="お名前" class="w-full p-4 text-sm outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 tracking-widest uppercase">Age</label>
+                            <select id="age" required class="w-full p-4 text-sm outline-none bg-white">
+                                <option value="">年齢を選択してください</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 tracking-widest uppercase">Email</label>
+                            <input type="email" id="email" required placeholder="メールアドレス" class="w-full p-4 text-sm outline-none">
+                        </div>
+                    </div>
+                </section>
+
+                <div class="pt-16">
+                    <button type="submit" id="submitBtn" class="w-full gold-bg text-white py-5 text-xs tracking-[0.2em] font-medium shadow-sm uppercase disabled:opacity-30 transition-all" disabled>
+                        Complete Reservation
+                    </button>
+                    <p id="hintText" class="text-center text-[10px] text-gray-400 mt-4 tracking-wider">※希望日時を3つ選択すると送信可能になります</p>
+                </div>
+            </form>
+        </div>
+
+        <!-- 完了画面 -->
+        <div id="successMessage" class="fade-in hidden-content text-center py-20">
+            <h2 class="serif text-2xl mb-6 tracking-widest uppercase">Thank you.</h2>
+            <p class="text-sm text-gray-500 leading-loose mb-10 text-center w-full">
+                お申し込みを承りました。<br>
+                担当者がスケジュール確認後、<br>
+                LINEにてご連絡差し上げます。<br>
+                あなたにお会いできるのを楽しみにしております。
+            </p>
+            <button onclick="location.reload()" class="text-[10px] tracking-[0.3em] text-[#333] border-b border-[#333] pb-1 uppercase mx-auto block">
+                Back to Home
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="mt-10 mb-10 text-center">
+        <div class="h-px w-8 bg-gray-300 mx-auto mb-6"></div>
+    </footer>
+
+    <script>
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzFeJZcPyp5b1QQaUtmRV3vX5vVSxwQcQ8Wa2RXLPCK9IIUEV9M5ukfnSUoqJlsUxCT/exec";
+
+        const ageSelect = document.getElementById('age');
+        for (let i = 20; i <= 65; i++) {
+            const opt = document.createElement('option');
+            opt.value = i === 65 ? "65歳以上" : `${i}歳`;
+            opt.text = i === 65 ? "65歳以上" : `${i}歳`;
+            ageSelect.appendChild(opt);
+        }
+
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('prefDate').setAttribute('min', today);
+        document.getElementById('prefDate').value = today;
+
+        let selectedSlots = [];
+        const timeButtons = document.querySelectorAll('.time-slot');
+        const submitBtn = document.getElementById('submitBtn');
+        const hintText = document.getElementById('hintText');
+        const selectedList = document.getElementById('selectedList');
+        const form = document.getElementById('reservationForm');
+
+        timeButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const date = document.getElementById('prefDate').value;
+                if (!date) return;
+                const time = btn.dataset.time;
+                const slotId = `${date} ${time}`;
+                if (selectedSlots.includes(slotId)) {
+                    selectedSlots = selectedSlots.filter(s => s !== slotId);
+                    btn.classList.remove('selected');
+                } else {
+                    if (selectedSlots.length < 3) {
+                        selectedSlots.push(slotId);
+                        btn.classList.add('selected');
+                    }
+                }
+                updateSummary();
+            });
+        });
+
+        function updateSummary() {
+            if (selectedSlots.length === 0) {
+                selectedList.innerHTML = '<li class="text-gray-300 italic text-center py-2">日時が選択されていません</li>';
+                submitBtn.disabled = true;
+            } else {
+                selectedList.innerHTML = selectedSlots.map((s, i) => `
+                    <li class="flex justify-between items-center border-b border-[#f0ede9] pb-2">
+                        <span><span class="gold-text mr-3 italic">#0${i+1}</span>${s}</span>
+                        <button type="button" class="text-[9px] text-gray-400" onclick="removeSlot('${s}')">REMOVE</button>
+                    </li>
+                `).join('');
+                const isReady = selectedSlots.length === 3;
+                submitBtn.disabled = !isReady;
+                hintText.style.opacity = isReady ? "0" : "1";
+            }
+        }
+
+        window.removeSlot = function(slot) {
+            selectedSlots = selectedSlots.filter(s => s !== slot);
+            timeButtons.forEach(btn => {
+                const date = document.getElementById('prefDate').value;
+                if (`${date} ${btn.dataset.time}` === slot) btn.classList.remove('selected');
+            });
+            updateSummary();
+        };
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            submitBtn.disabled = true;
+            const originalBtnText = submitBtn.innerText;
+            submitBtn.innerText = "Processing...";
+
+            const formData = {
+                name: document.getElementById('name').value,
+                age: document.getElementById('age').value,
+                email: document.getElementById('email').value,
+                slots: selectedSlots
+            };
+
+            try {
+                await fetch(GAS_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData)
+                });
+                document.getElementById('reservationScreen').classList.add('hidden-content');
+                document.getElementById('successMessage').classList.remove('hidden-content');
+                window.scrollTo(0, 0);
+            } catch (error) {
+                console.error("Error:", error);
+                alert("送信中にエラーが発生しました。再度お試しください。");
+                submitBtn.disabled = false;
+                submitBtn.innerText = originalBtnText;
+            }
+        });
+    </script>
+</body>
+</html>

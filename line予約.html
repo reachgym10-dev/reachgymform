@@ -215,6 +215,10 @@
                                 <option value="">年齢を選択してください</option>
                             </select>
                         </div>
+                        <div>
+                            <label class="block text-[10px] text-gray-400 mb-2 tracking-widest uppercase">Email (Optional)</label>
+                            <input type="email" id="email" placeholder="メールアドレス（任意）" class="w-full p-4 text-sm outline-none">
+                        </div>
                     </div>
                 </section>
 
@@ -356,7 +360,7 @@
             const formData = {
                 name: document.getElementById('name').value,
                 age: document.getElementById('age').value,
-                email: "", // メールアドレス欄削除にともない空文字で送信
+                email: document.getElementById('email').value || "", // 入力があれば送信、なければ空文字
                 slots: selectedSlots
             };
 
